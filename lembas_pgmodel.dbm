@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.3" use-changelog="false" last-position="0,575" last-zoom="1" max-obj-count="7"
+	 default-schema="public" default-owner="postgres">
+<database name="recipes" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="Ingredient" layer="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="260" y="140"/>
+	<column name="name">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="Ingredient_pk" type="pk-constr" table="public.&quot;Ingredient&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<usertype name="unit_type" configuration="enumeration">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<enumeration values="time,length,volume,temperature,mass,piece"/>
+</usertype>
+
+<table name="Recipe" layer="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="720" y="660"/>
+	<column name="name">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="date_added">
+		<type name="date" length="0"/>
+	</column>
+	<column name="date_modified">
+		<type name="date" length="0"/>
+	</column>
+	<column name="Instructions">
+		<type name="text" length="0"/>
+	</column>
+	<column name="cooking_time">
+		<type name="time" length="0"/>
+	</column>
+	<constraint name="Recipe_pk" type="pk-constr" table="public.&quot;Recipe&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="RecipeIngredient" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="700" y="300"/>
+</table>
+
+<relationship name="Recipe_has_many_RecipeIngredient" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#e01c0b"
+	 src-table="public.&quot;Recipe&quot;"
+	 dst-table="public.&quot;RecipeIngredient&quot;"
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="0.719187" y="-3.53226"/>
+	</label>
+	<special-pk-cols indexes="0"/>
+</relationship>
+
+<relationship name="Ingredient_has_many_RecipeIngredient" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#1e7e94"
+	 src-table="public.&quot;Ingredient&quot;"
+	 dst-table="public.&quot;RecipeIngredient&quot;"
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="-2.38817" y="-6.33226"/>
+	</label>
+	<constraint name="RecipeIngredient_pk" type="pk-constr" alias="RecipeIngredient_pk" protected="true" table="public.&quot;RecipeIngredient&quot;">
+		</constraint>
+	<special-pk-cols indexes="0"/>
+</relationship>
+
+<table name="Unit" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1220" y="80"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="name">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="type">
+		<type name="public.unit_type" length="0"/>
+	</column>
+	<column name="factor">
+		<type name="float" length="0"/>
+		<comment><![CDATA[factor compared to the SI Unit]]></comment>
+	</column>
+	<column name="offset">
+		<type name="float" length="0"/>
+		<comment><![CDATA[offset compared to the SI unit]]></comment>
+	</column>
+	<constraint name="Unit_pk" type="pk-constr" table="public.&quot;Unit&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Meal" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1320" y="700"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="date">
+		<type name="date" length="0"/>
+	</column>
+	<constraint name="meal_pk" type="pk-constr" table="public.&quot;Meal&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_User" index="2"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="User_fk" index="1"/>
+	</customidxs>
+</table>
+
+<relationship name="many_Recipe_has_many_Meal" type="relnn" layer="0"
+	 src-col-pattern="{sc}_{st}" dst-col-pattern="{sc}_{dt}"
+	 pk-pattern="{gt}_pk" uq-pattern="{gt}_uq"
+	 src-fk-pattern="{st}_fk" dst-fk-pattern="{dt}_fk"
+	 pk-col-pattern="id"
+	 custom-color="#86f2f1"
+	 src-table="public.&quot;Recipe&quot;"
+	 dst-table="public.&quot;Meal&quot;"
+	 src-required="false" dst-required="false"
+	 table-name="many_Recipe_has_many_meal">
+	<label ref-type="name-label">
+		<position x="-5.71504" y="5.41453"/>
+	</label>
+</relationship>
+
+<relationship name="Unit_has_many_RecipeIngredient" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#91fefa"
+	 src-table="public.&quot;Unit&quot;"
+	 dst-table="public.&quot;RecipeIngredient&quot;"
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="2.663" y="-6.33226"/>
+	</label>
+	<constraint name="RecipeIngredient_pk" type="pk-constr" alias="RecipeIngredient_pk" protected="true" table="public.&quot;RecipeIngredient&quot;">
+		</constraint>
+	<special-pk-cols indexes="0"/>
+</relationship>
+
+<table name="User" layer="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1080" y="1020"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="name">
+		<type name="varchar" length="50"/>
+	</column>
+	<constraint name="User_pk" type="pk-constr" table="public.&quot;User&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="User_has_many_Meal" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#3b2322"
+	 src-table="public.&quot;User&quot;"
+	 dst-table="public.&quot;Meal&quot;"
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="-4.94386" y="-4.93226"/>
+	</label>
+</relationship>
+
+</dbmodel>
