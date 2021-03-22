@@ -2,6 +2,8 @@ defmodule Lembas.Recipes.Recipe do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Lembas.Recipes.RecipeIngredient
+
   schema "recipes" do
     field :cooking_time, :time
     field :instructions, :string

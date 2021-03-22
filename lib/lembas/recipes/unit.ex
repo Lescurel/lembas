@@ -2,6 +2,8 @@ defmodule Lembas.Recipes.Unit do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Lembas.Recipes.RecipeIngredient
+
   schema "units" do
     field :factor, :float
     field :name, :string

@@ -2,6 +2,10 @@ defmodule Lembas.Recipes.RecipeIngredient do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Lembas.Recipes.Recipe
+  alias Lembas.Recipes.Ingredient
+  alias Lembas.Recipes.Unit
+
   schema "recipe_ingredients" do
 
     belongs_to :recipe, Recipe
