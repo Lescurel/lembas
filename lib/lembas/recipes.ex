@@ -7,6 +7,7 @@ defmodule Lembas.Recipes do
   alias Lembas.Repo
 
   alias Lembas.Recipes.Recipe
+  alias Lembas.Recipes.RecipeIngredientUnit
 
   @doc """
   Returns the list of recipes.
@@ -18,7 +19,9 @@ defmodule Lembas.Recipes do
 
   """
   def list_recipes do
-    Repo.all(Recipe)
+    Recipe
+    |> Repo.all()
+    |> Repo.preload([recipe_ingredient_units: [:ingredient, :unit]])
   end
 
   @doc """
@@ -35,7 +38,11 @@ defmodule Lembas.Recipes do
       ** (Ecto.NoResultsError)
 
   """
-  def get_recipe!(id), do: Repo.get!(Recipe, id)
+  def get_recipe!(id) do
+    Recipe
+    |> Repo.get!(id)
+    |> Repo.preload([recipe_ingredient_units: [:ingredient, :unit]])
+  end
 
   @doc """
   Creates a recipe.
@@ -52,6 +59,7 @@ defmodule Lembas.Recipes do
   def create_recipe(attrs \\ %{}) do
     %Recipe{}
     |> Recipe.changeset(attrs)
+    |> Ecto.Changeset.cast_assoc(:recipe_ingredient_units, with: &RecipeIngredientUnit.changeset/2)
     |> Repo.insert()
   end
 
@@ -294,99 +302,105 @@ defmodule Lembas.Recipes do
     Unit.changeset(unit, attrs)
   end
 
-  alias Lembas.Recipes.RecipeIngredient
+  alias Lembas.Recipes.RecipeIngredientUnit
 
   @doc """
-  Returns the list of recipe_ingredients.
+  Returns the list of recipe_ingredient_units.
 
   ## Examples
 
-      iex> list_recipe_ingredients()
-      [%RecipeIngredient{}, ...]
+      iex> list_recipe_ingredient_units()
+      [%RecipeIngredientUnit{}, ...]
 
   """
-  def list_recipe_ingredients do
-    Repo.all(RecipeIngredient)
+  def list_recipe_ingredient_units do
+    RecipeIngredientUnit
+    |> Repo.all()
+    |> Repo.preload([:ingredient, :unit])
   end
 
   @doc """
-  Gets a single recipe_ingredient.
+  Gets a single recipe_ingredient_unit.
 
   Raises `Ecto.NoResultsError` if the Recipe ingredient does not exist.
 
   ## Examples
 
-      iex> get_recipe_ingredient!(123)
-      %RecipeIngredient{}
+      iex> get_recipe_ingredient_unit!(123)
+      %RecipeIngredientUnit{}
 
-      iex> get_recipe_ingredient!(456)
+      iex> get_recipe_ingredient_unit!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_recipe_ingredient!(id), do: Repo.get!(RecipeIngredient, id)
+  def get_recipe_ingredient_unit!(id) do
+    RecipeIngredientUnit
+  |> Repo.get!(id)
+  |> Repo.preload([:ingredient, :unit])
+  end
 
   @doc """
-  Creates a recipe_ingredient.
+  Creates a recipe_ingredient_unit.
 
   ## Examples
 
-      iex> create_recipe_ingredient(%{field: value})
-      {:ok, %RecipeIngredient{}}
+      iex> create_recipe_ingredient_unit(%{field: value})
+      {:ok, %RecipeIngredientUnit{}}
 
-      iex> create_recipe_ingredient(%{field: bad_value})
+      iex> create_recipe_ingredient_unit(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_recipe_ingredient(attrs \\ %{}) do
-    %RecipeIngredient{}
-    |> RecipeIngredient.changeset(attrs)
+  def create_recipe_ingredient_unit(attrs \\ %{}) do
+    %RecipeIngredientUnit{}
+    |> RecipeIngredientUnit.changeset(attrs)
     |> Repo.insert()
   end
 
   @doc """
-  Updates a recipe_ingredient.
+  Updates a recipe_ingredient_unit.
 
   ## Examples
 
-      iex> update_recipe_ingredient(recipe_ingredient, %{field: new_value})
-      {:ok, %RecipeIngredient{}}
+      iex> update_recipe_ingredient_unit(recipe_ingredient_unit, %{field: new_value})
+      {:ok, %RecipeIngredientUnit{}}
 
-      iex> update_recipe_ingredient(recipe_ingredient, %{field: bad_value})
+      iex> update_recipe_ingredient_unit(recipe_ingredient_unit, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_recipe_ingredient(%RecipeIngredient{} = recipe_ingredient, attrs) do
-    recipe_ingredient
-    |> RecipeIngredient.changeset(attrs)
+  def update_recipe_ingredient_unit(%RecipeIngredientUnit{} = recipe_ingredient_unit, attrs) do
+    recipe_ingredient_unit
+    |> RecipeIngredientUnit.changeset(attrs)
     |> Repo.update()
   end
 
   @doc """
-  Deletes a recipe_ingredient.
+  Deletes a recipe_ingredient_unit.
 
   ## Examples
 
-      iex> delete_recipe_ingredient(recipe_ingredient)
-      {:ok, %RecipeIngredient{}}
+      iex> delete_recipe_ingredient_unit(recipe_ingredient_unit)
+      {:ok, %RecipeIngredientUnit{}}
 
-      iex> delete_recipe_ingredient(recipe_ingredient)
+      iex> delete_recipe_ingredient_unit(recipe_ingredient_unit)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_recipe_ingredient(%RecipeIngredient{} = recipe_ingredient) do
-    Repo.delete(recipe_ingredient)
+  def delete_recipe_ingredient_unit(%RecipeIngredientUnit{} = recipe_ingredient_unit) do
+    Repo.delete(recipe_ingredient_unit)
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking recipe_ingredient changes.
+  Returns an `%Ecto.Changeset{}` for tracking recipe_ingredient_unit changes.
 
   ## Examples
 
-      iex> change_recipe_ingredient(recipe_ingredient)
-      %Ecto.Changeset{data: %RecipeIngredient{}}
+      iex> change_recipe_ingredient_unit(recipe_ingredient_unit)
+      %Ecto.Changeset{data: %RecipeIngredientUnit{}}
 
   """
-  def change_recipe_ingredient(%RecipeIngredient{} = recipe_ingredient, attrs \\ %{}) do
-    RecipeIngredient.changeset(recipe_ingredient, attrs)
+  def change_recipe_ingredient_unit(%RecipeIngredientUnit{} = recipe_ingredient_unit, attrs \\ %{}) do
+    RecipeIngredientUnit.changeset(recipe_ingredient_unit, attrs)
   end
 end

@@ -2,14 +2,14 @@ defmodule Lembas.Recipes.Recipe do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias Lembas.Recipes.RecipeIngredient
+  alias Lembas.Recipes.RecipeIngredientUnit
 
   schema "recipes" do
     field :cooking_time, :time
     field :instructions, :string
     field :name, :string
     field :yield, :integer
-    has_many :recipe_ingredient, RecipeIngredient
+    has_many :recipe_ingredient_units, RecipeIngredientUnit
 
     timestamps()
   end

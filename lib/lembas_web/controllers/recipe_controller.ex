@@ -3,6 +3,9 @@ defmodule LembasWeb.RecipeController do
 
   alias Lembas.Recipes
   alias Lembas.Recipes.Recipe
+  alias Lembas.Recipes.Ingredient
+  alias Lembas.Recipes.Unit
+  alias Lembas.Recipes.RecipeIngredientUnit
 
   def index(conn, _params) do
     recipes = Recipes.list_recipes()
@@ -10,8 +13,15 @@ defmodule LembasWeb.RecipeController do
   end
 
   def new(conn, _params) do
-    changeset = Recipes.change_recipe(%Recipe{})
-    render(conn, "new.html", changeset: changeset)
+    changeset =
+      Recipes.change_recipe(%Recipe{
+        recipe_ingredient_units: [%RecipeIngredientUnit{
+          ingredient: %Ingredient{},
+          unit: %Unit{}
+        }]
+      })
+    units = Recipes.list_units()
+    render(conn, "new.html", assigns: %{changeset: changeset, units: units})
   end
 
   def create(conn, %{"recipe" => recipe_params}) do

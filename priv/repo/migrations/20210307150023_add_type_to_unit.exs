@@ -7,7 +7,7 @@ defmodule MyApp.Repo.Migrations.AddTypeToUnit do
     execute(create_query, drop_query)
 
     alter table(:units) do
-      add :unit, :unit_type
+      add :type, :unit_type
     end
   end
 end

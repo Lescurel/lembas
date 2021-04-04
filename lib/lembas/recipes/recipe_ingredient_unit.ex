@@ -1,4 +1,4 @@
-defmodule Lembas.Recipes.RecipeIngredient do
+defmodule Lembas.Recipes.RecipeIngredientUnit do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -6,7 +6,7 @@ defmodule Lembas.Recipes.RecipeIngredient do
   alias Lembas.Recipes.Ingredient
   alias Lembas.Recipes.Unit
 
-  schema "recipe_ingredients" do
+  schema "recipe_ingredient_units" do
 
     belongs_to :recipe, Recipe
     belongs_to :ingredient, Ingredient
@@ -15,8 +15,8 @@ defmodule Lembas.Recipes.RecipeIngredient do
   end
 
   @doc false
-  def changeset(recipe_ingredient, attrs) do
-    recipe_ingredient
+  def changeset(recipe_ingredient_unit, attrs) do
+    recipe_ingredient_unit
     |> cast(attrs, [])
     |> validate_required([])
   end
